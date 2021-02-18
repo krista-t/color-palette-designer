@@ -41,11 +41,7 @@ input {
   -o-border-radius: 10px;
 }
 
-.colorsquare1,
-.colorsquare2,
-.colorsquare3,
-.colorsquare4,
-.colorsquare5 {
+.colorsquare {
   display: flex;
   text-align: center;
   height: 170px;

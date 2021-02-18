@@ -9,19 +9,32 @@ function start() {
 //get base color value
 function getUserInput(e) {
   const color = e.target.value;
-  changeColor(color);
+  convertColor(color);
 }
 
 //delegator
-function changeColor(hexValue) {
+function convertColor(hexValue) {
   //convert hex to rgb
   const rgb = hexToRgb(hexValue);
   //convert rgb to hsl function
   const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+  //rgb to hex
+  const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+  console.log(hex);
+  //hsl to rgb
+  const newRGB = hslToRgb(hsl.h, hsl.s, hsl.l);
+  console.log(newRGB);
   //delegator for all harmony calculations
-  calculateHarmony(hsl.h, hsl.s, hsl.l);
+  const hslArr = calculateHarmony(hsl);
+  showValues(hslArr);
+}
+function showValues(hslArr) {
+  for (let i = 0; i < hslArr.lenght; i++) {
+    //TREBA MI HEX value
+  }
 }
 
+//covert hex to rgb
 function hexToRgb(hex) {
   let r = parseInt(hex.substring(1, 3), 16);
   let g = parseInt(hex.substring(3, 5), 16);
@@ -30,6 +43,7 @@ function hexToRgb(hex) {
   return { r, g, b };
 }
 
+// convert rgb to hsl
 function rgbToHsl(r, g, b) {
   r /= 255;
   g /= 255;
@@ -70,60 +84,8 @@ function rgbToHsl(r, g, b) {
   h = Math.floor(h);
   s = Math.floor(s);
   l = Math.floor(l);
+  console.log({ h, s, l });
   return { h, s, l };
-}
-
-//another delegator that calls functions based on selected value
-function calculateHarmony(h, s, l) {
-  console.log(h, s, l);
-  let selected = document.querySelector(".selected");
-  let selectedValue = selected.value;
-  console.log(selectedValue);
-  let newHSL;
-  if (selectedValue == "analogous") {
-    console.log("hi");
-    newHSL = getAnalogues(h, s, l);
-  } else if (selectedValue == "monochromatic") {
-    newHSL = getMonochromatic(h, s, l);
-  } else if (selectedValue == "triad") {
-    newHSL = getTriad(h, s, l);
-  } else if (selectedValue == "complementary") {
-    newHSL = getComplementary(h, s, l);
-  } else if (selectedValue == "compound") {
-    newHSL = getCompound(h, s, l);
-  } else if (selectedValue == "shades") {
-    newHSL = getShades(h, s, l);
-  }
-}
-
-//basecolor square
-// function colorBox(colorValue) {
-//   const colorSquare1 = document.querySelector(".colorsquare1");
-//   colorSquare1.style.background = colorValue;
-// }
-
-// function writeHex(value) {
-//   let hexTxt = document.querySelector(".hex");
-//   hexTxt.innerHTML = `HEX: ${value}`;
-// }
-
-// function writeRgB(red, blue, green) {
-//   // console.log(red, blue, green);
-//   let rgbTxt = document.querySelector(".rgb");
-//   rgbTxt.innerHTML = `RGB: ${red} ${blue} ${green}`;
-// }
-
-function writeHsl(Hvalue, Svalue, Lvalue) {
-  console.log(Hvalue, Svalue, Lvalue);
-  let hslTxt = document.querySelector(".hsl");
-  hslTxt.innerHTML = `HSL: ${Hvalue} ${Svalue}% ${Lvalue}% `;
-}
-
-function rgbToCSS(rgb) {
-  // converts rgb object to CSS color string
-  let cssStr = "rgb" + "(" + `${rgb.r},${rgb.g},${rgb.b}` + ")";
-  console.log(cssStr);
-  return cssStr;
 }
 
 function rgbToHex(r, g, b) {
@@ -136,7 +98,107 @@ function rgbToHex(r, g, b) {
     b = b.padStart(2, "0");
   }
   const hex = "#" + `${r}${g}${b}`;
-
-  console.log(hex);
   return hex;
 }
+
+function hslToRgb(h, s, l) {
+  console.log(h, s, l);
+  h = h;
+  s = s / 100;
+  l = l / 100;
+
+  let c = (1 - Math.abs(2 * l - 1)) * s,
+    x = c * (1 - Math.abs(((h / 60) % 2) - 1)),
+    m = l - c / 2,
+    r = 0,
+    g = 0,
+    b = 0;
+  if (0 <= h && h < 60) {
+    r = c;
+    g = x;
+    b = 0;
+  } else if (60 <= h && h < 120) {
+    r = x;
+    g = c;
+    b = 0;
+  } else if (120 <= h && h < 180) {
+    r = 0;
+    g = c;
+    b = x;
+  } else if (180 <= h && h < 240) {
+    r = 0;
+    g = x;
+    b = c;
+  } else if (240 <= h && h < 300) {
+    r = x;
+    g = 0;
+    b = c;
+  } else if (300 <= h && h < 360) {
+    r = c;
+    g = 0;
+    b = x;
+  }
+  r = Math.round((r + m) * 255);
+  g = Math.round((g + m) * 255);
+  b = Math.round((b + m) * 255);
+
+  return { r, g, b };
+}
+
+//another delegator that calls functions based on selected value
+function calculateHarmony(hsl) {
+  console.log(hsl);
+  let selected = document.querySelector(".selected");
+  let selectedValue = selected.value;
+  let hslArr;
+  if (selectedValue === "analogous") {
+    hslArr = getAnalogues(hsl);
+  } else if (selectedValue === "monochromatic") {
+    hslArr = getMonochromatic(hsl);
+  } else if (selectedValue === "triad") {
+    hslArr = getTriad(hsl);
+  } else if (selectedValue === "complementary") {
+    hslArr = getComplementary(hsl);
+  } else if (selectedValue === "compound") {
+    hslArr = getCompound(hsl);
+  } else if (selectedValue === "shades") {
+    hslArr = getShades(hsl);
+  }
+  return hslArr;
+}
+
+//calculations
+function getAnalogues(hsl) {
+  const hslArr = new Array(5);
+  hslArr[0] = { h: hsl.h, s: hsl.s, l: hsl.l };
+  hslArr[1] = { h: hsl.h + 20, s: hsl.s, l: hsl.l + 10 };
+  hslArr[2] = { h: hsl.h + 40, s: hsl.s, l: hsl.l + 20 };
+  hslArr[3] = { h: hsl.h - 40, s: hsl.s, l: hsl.l };
+  hslArr[4] = { h: hsl.h - 20, s: hsl.s, l: hsl.l + 20 };
+  console.log(hslArr);
+  return hslArr;
+}
+
+// function writeHex(value) {
+//   let hexTxt = document.querySelector(".hex");
+//   hexTxt.innerHTML = `HEX: ${value}`;
+// }
+
+// function writeRgB(red, blue, green) {
+//   // console.log(red, blue, green);
+//   let rgbTxt = document.querySelector(".rgb");
+//   rgbTxt.innerHTML = `RGB: ${red} ${blue} ${green}`;
+// }
+
+// function writeHsl(Hvalue, Svalue, Lvalue) {
+//   console.log(Hvalue, Svalue, Lvalue);
+//   let hslTxt = document.querySelector(".hsl");
+//   hslTxt.innerHTML = `HSL: ${Hvalue} ${Svalue}% ${Lvalue}% `;
+// }
+
+// function rgbToCSS(rgb) {
+//   // converts rgb object to CSS color string
+//   let cssStr = "rgb" + "(" + `${rgb.r},${rgb.g},${rgb.b}` + ")";
+//   console.log(cssStr);
+//   return cssStr;
+// }
