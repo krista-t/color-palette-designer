@@ -26,11 +26,59 @@ function convertColor(hexValue) {
   console.log(newRGB);
   //delegator for all harmony calculations
   const hslArr = calculateHarmony(hsl);
-  showValues(hslArr);
+  writeHSL(hslArr, hslArr.length); //why does it not show length without second param??
+  writeRGB(hslArr, hslArr.length);
+  writeHex(hslArr, hslArr.length);
+  showColors(hslArr, hslArr.length);
 }
-function showValues(hslArr) {
-  for (let i = 0; i < hslArr.lenght; i++) {
-    //TREBA MI HEX value
+
+function showColors(hslArr, lenArr) {
+  const colorArr = new Array(lenArr);
+  let elColor;
+  let elRGB;
+  let elHex;
+  for (let i = 0; i < lenArr; i++) {
+    elColor = "#color-box" + (i + 1) + " .colorsquare";
+    elRGB = hslToRgb(hslArr[i].h, hslArr[i].s, hslArr[i].l);
+    elHex = rgbToHex(elRGB.r, elRGB.g, elRGB.b);
+    console.log(elHex);
+    let htmlDiv = document.querySelector(elColor);
+    htmlDiv.style.background = elHex;
+  }
+}
+
+function writeHex(hslArr, lenArr) {
+  const hexArr = new Array(lenArr);
+  let elementStr;
+  let elHex;
+  let elRGB;
+  for (let i = 0; i < lenArr; i++) {
+    elementStr = "#color-box" + (i + 1) + " .hex";
+    elRGB = hslToRgb(hslArr[i].h, hslArr[i].s, hslArr[i].l);
+    elHex = rgbToHex(elRGB.r, elRGB.g, elRGB.b);
+    let htmlDiv = document.querySelector(elementStr);
+    htmlDiv.innerHTML = `HEX: ${elHex}`;
+  }
+}
+
+function writeRGB(hslArr, lenArr) {
+  const rgbArr = new Array(lenArr);
+  let elementStr;
+  let elRGB;
+  for (let i = 0; i < lenArr; i++) {
+    elementStr = "#color-box" + (i + 1) + " .rgb";
+    elRGB = hslToRgb(hslArr[i].h, hslArr[i].s, hslArr[i].l);
+    let htmlDiv = document.querySelector(elementStr);
+    htmlDiv.innerHTML = `RGB: ${elRGB.r} ${elRGB.g} ${elRGB.b}`;
+  }
+}
+
+function writeHSL(hslArr, lenArr) {
+  let elementStr;
+  for (let i = 0; i < lenArr; i++) {
+    elementStr = "#color-box" + (i + 1) + " .hsl";
+    let htmlDiv = document.querySelector(elementStr);
+    htmlDiv.innerHTML = `HSL: ${hslArr[i].h} ${hslArr[i].s}% ${hslArr[i].l}% `;
   }
 }
 
@@ -190,10 +238,10 @@ function getAnalogues(hsl) {
 //   rgbTxt.innerHTML = `RGB: ${red} ${blue} ${green}`;
 // }
 
-// function writeHsl(Hvalue, Svalue, Lvalue) {
+// function writeHsl(Hvalue, Svalue, Lvalue, htmlDiv) {
 //   console.log(Hvalue, Svalue, Lvalue);
 //   let hslTxt = document.querySelector(".hsl");
-//   hslTxt.innerHTML = `HSL: ${Hvalue} ${Svalue}% ${Lvalue}% `;
+//   htmlDiv.innerHTML = `HSL: ${Hvalue} ${Svalue}% ${Lvalue}% `;
 // }
 
 // function rgbToCSS(rgb) {
