@@ -165,7 +165,7 @@ function calculateHarmony(hsl) {
   return hslArr;
 }
 
-//calculations
+//calculations (loosely correct)
 function getAnalogues(hsl) {
   const hslArr = new Array(5);
   hslArr[0] = { h: hsl.h, s: hsl.s, l: hsl.l };
@@ -180,10 +180,10 @@ function getAnalogues(hsl) {
 function getMonochromatic(hsl) {
   const hslArr = new Array(5);
   hslArr[0] = { h: hsl.h, s: hsl.s, l: hsl.l };
-  hslArr[1] = { h: hsl.h, s: hsl.s, l: hsl.l + 10 };
-  hslArr[2] = { h: hsl.h, s: hsl.s, l: hsl.l + 20 };
-  hslArr[3] = { h: hsl.h, s: hsl.s, l: hsl.l + 30 };
-  hslArr[4] = { h: hsl.h, s: hsl.s, l: hsl.l + 40 };
+  hslArr[1] = { h: hsl.h, s: hsl.s - 30, l: hsl.l };
+  hslArr[2] = { h: hsl.h, s: hsl.s - 60, l: hsl.l };
+  hslArr[3] = { h: hsl.h, s: hsl.s - 90, l: hsl.l };
+  hslArr[4] = { h: hsl.h, s: hsl.s - 120, l: hsl.l };
   console.log(hslArr);
   return hslArr;
 }
@@ -191,8 +191,8 @@ function getMonochromatic(hsl) {
 function getTriad(hsl) {
   const hslArr = new Array(5);
   hslArr[0] = { h: hsl.h, s: hsl.s, l: hsl.l };
-  hslArr[1] = { h: hsl.h + 60, s: hsl.s, l: hsl.l };
-  hslArr[2] = { h: hsl.h + 120, s: hsl.s, l: hsl.l };
+  hslArr[1] = { h: hsl.h + 120, s: hsl.s, l: hsl.l };
+  hslArr[2] = { h: hsl.h + (240 % 360), s: hsl.s, l: hsl.l };
   hslArr[3] = { h: hsl.h, s: hsl.s, l: hsl.l };
   hslArr[4] = { h: hsl.h, s: hsl.s, l: hsl.l };
   console.log(hslArr);
@@ -202,10 +202,10 @@ function getTriad(hsl) {
 function getComplementary(hsl) {
   const hslArr = new Array(5);
   hslArr[0] = { h: hsl.h, s: hsl.s, l: hsl.l };
-  hslArr[1] = { h: hsl.h + 180, s: hsl.s, l: hsl.l };
-  hslArr[2] = { h: hsl.h + (240 % 360), s: hsl.s, l: hsl.l };
-  hslArr[3] = { h: hsl.h, s: hsl.s, l: hsl.l };
-  hslArr[4] = { h: hsl.h, s: hsl.s, l: hsl.l };
+  hslArr[1] = { h: hsl.h + 90, s: hsl.s, l: hsl.l };
+  hslArr[2] = { h: hsl.h + 120, s: hsl.s, l: hsl.l };
+  hslArr[3] = { h: hsl.h + 180, s: hsl.s, l: hsl.l };
+  hslArr[4] = { h: hsl.h + 240, s: hsl.s, l: hsl.l };
   console.log(hslArr);
   return hslArr;
 }
@@ -232,12 +232,12 @@ function getShades(hsl) {
   return hslArr;
 }
 
-function showColors(hslArr, lenArr) {
-  const colorArr = new Array(lenArr);
+//loop through array and show base and calculated colors
+function showColors(hslArr, length) {
   let elColor;
   let elRGB;
   let elHex;
-  for (let i = 0; i < lenArr; i++) {
+  for (let i = 0; i < length; i++) {
     elColor = "#color-box" + (i + 1) + " .colorsquare";
     elRGB = hslToRgb(hslArr[i].h, hslArr[i].s, hslArr[i].l);
     elHex = rgbToHex(elRGB.r, elRGB.g, elRGB.b);
@@ -247,6 +247,7 @@ function showColors(hslArr, lenArr) {
   }
 }
 
+//loop through array and write hsl and calculated hsl
 function writeHSL(hslArr, lenArr) {
   let elementStr;
   for (let i = 0; i < lenArr; i++) {
@@ -256,8 +257,8 @@ function writeHSL(hslArr, lenArr) {
   }
 }
 
+//loop through array and write rgb and calculated/converted rgb
 function writeRGB(hslArr, lenArr) {
-  const rgbArr = new Array(lenArr);
   let elementStr;
   let elRGB;
   for (let i = 0; i < lenArr; i++) {
@@ -268,8 +269,8 @@ function writeRGB(hslArr, lenArr) {
   }
 }
 
+//loop through array and write hex and calculated/converted hex
 function writeHex(hslArr, lenArr) {
-  const hexArr = new Array(lenArr);
   let elementStr;
   let elHex;
   let elRGB;
