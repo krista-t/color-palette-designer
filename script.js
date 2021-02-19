@@ -32,56 +32,6 @@ function convertColor(hexValue) {
   showColors(hslArr, hslArr.length);
 }
 
-function showColors(hslArr, lenArr) {
-  const colorArr = new Array(lenArr);
-  let elColor;
-  let elRGB;
-  let elHex;
-  for (let i = 0; i < lenArr; i++) {
-    elColor = "#color-box" + (i + 1) + " .colorsquare";
-    elRGB = hslToRgb(hslArr[i].h, hslArr[i].s, hslArr[i].l);
-    elHex = rgbToHex(elRGB.r, elRGB.g, elRGB.b);
-    console.log(elHex);
-    let htmlDiv = document.querySelector(elColor);
-    htmlDiv.style.background = elHex;
-  }
-}
-
-function writeHex(hslArr, lenArr) {
-  const hexArr = new Array(lenArr);
-  let elementStr;
-  let elHex;
-  let elRGB;
-  for (let i = 0; i < lenArr; i++) {
-    elementStr = "#color-box" + (i + 1) + " .hex";
-    elRGB = hslToRgb(hslArr[i].h, hslArr[i].s, hslArr[i].l);
-    elHex = rgbToHex(elRGB.r, elRGB.g, elRGB.b);
-    let htmlDiv = document.querySelector(elementStr);
-    htmlDiv.innerHTML = `HEX: ${elHex}`;
-  }
-}
-
-function writeRGB(hslArr, lenArr) {
-  const rgbArr = new Array(lenArr);
-  let elementStr;
-  let elRGB;
-  for (let i = 0; i < lenArr; i++) {
-    elementStr = "#color-box" + (i + 1) + " .rgb";
-    elRGB = hslToRgb(hslArr[i].h, hslArr[i].s, hslArr[i].l);
-    let htmlDiv = document.querySelector(elementStr);
-    htmlDiv.innerHTML = `RGB: ${elRGB.r} ${elRGB.g} ${elRGB.b}`;
-  }
-}
-
-function writeHSL(hslArr, lenArr) {
-  let elementStr;
-  for (let i = 0; i < lenArr; i++) {
-    elementStr = "#color-box" + (i + 1) + " .hsl";
-    let htmlDiv = document.querySelector(elementStr);
-    htmlDiv.innerHTML = `HSL: ${hslArr[i].h} ${hslArr[i].s}% ${hslArr[i].l}% `;
-  }
-}
-
 //covert hex to rgb
 function hexToRgb(hex) {
   let r = parseInt(hex.substring(1, 3), 16);
@@ -219,34 +169,115 @@ function calculateHarmony(hsl) {
 function getAnalogues(hsl) {
   const hslArr = new Array(5);
   hslArr[0] = { h: hsl.h, s: hsl.s, l: hsl.l };
-  hslArr[1] = { h: hsl.h + 20, s: hsl.s, l: hsl.l + 10 };
-  hslArr[2] = { h: hsl.h + 40, s: hsl.s, l: hsl.l + 20 };
+  hslArr[1] = { h: hsl.h + 20, s: hsl.s, l: hsl.l };
+  hslArr[2] = { h: hsl.h + 40, s: hsl.s, l: hsl.l };
   hslArr[3] = { h: hsl.h - 40, s: hsl.s, l: hsl.l };
-  hslArr[4] = { h: hsl.h - 20, s: hsl.s, l: hsl.l + 20 };
+  hslArr[4] = { h: hsl.h - 20, s: hsl.s, l: hsl.l };
   console.log(hslArr);
   return hslArr;
 }
 
-// function writeHex(value) {
-//   let hexTxt = document.querySelector(".hex");
-//   hexTxt.innerHTML = `HEX: ${value}`;
-// }
+function getMonochromatic(hsl) {
+  const hslArr = new Array(5);
+  hslArr[0] = { h: hsl.h, s: hsl.s, l: hsl.l };
+  hslArr[1] = { h: hsl.h, s: hsl.s, l: hsl.l + 10 };
+  hslArr[2] = { h: hsl.h, s: hsl.s, l: hsl.l + 20 };
+  hslArr[3] = { h: hsl.h, s: hsl.s, l: hsl.l + 30 };
+  hslArr[4] = { h: hsl.h, s: hsl.s, l: hsl.l + 40 };
+  console.log(hslArr);
+  return hslArr;
+}
 
-// function writeRgB(red, blue, green) {
-//   // console.log(red, blue, green);
-//   let rgbTxt = document.querySelector(".rgb");
-//   rgbTxt.innerHTML = `RGB: ${red} ${blue} ${green}`;
-// }
+function getTriad(hsl) {
+  const hslArr = new Array(5);
+  hslArr[0] = { h: hsl.h, s: hsl.s, l: hsl.l };
+  hslArr[1] = { h: hsl.h + 60, s: hsl.s, l: hsl.l };
+  hslArr[2] = { h: hsl.h + 120, s: hsl.s, l: hsl.l };
+  hslArr[3] = { h: hsl.h, s: hsl.s, l: hsl.l };
+  hslArr[4] = { h: hsl.h, s: hsl.s, l: hsl.l };
+  console.log(hslArr);
+  return hslArr;
+}
 
-// function writeHsl(Hvalue, Svalue, Lvalue, htmlDiv) {
-//   console.log(Hvalue, Svalue, Lvalue);
-//   let hslTxt = document.querySelector(".hsl");
-//   htmlDiv.innerHTML = `HSL: ${Hvalue} ${Svalue}% ${Lvalue}% `;
-// }
+function getComplementary(hsl) {
+  const hslArr = new Array(5);
+  hslArr[0] = { h: hsl.h, s: hsl.s, l: hsl.l };
+  hslArr[1] = { h: hsl.h + 180, s: hsl.s, l: hsl.l };
+  hslArr[2] = { h: hsl.h + (240 % 360), s: hsl.s, l: hsl.l };
+  hslArr[3] = { h: hsl.h, s: hsl.s, l: hsl.l };
+  hslArr[4] = { h: hsl.h, s: hsl.s, l: hsl.l };
+  console.log(hslArr);
+  return hslArr;
+}
 
-// function rgbToCSS(rgb) {
-//   // converts rgb object to CSS color string
-//   let cssStr = "rgb" + "(" + `${rgb.r},${rgb.g},${rgb.b}` + ")";
-//   console.log(cssStr);
-//   return cssStr;
-// }
+function getCompound(hsl) {
+  const hslArr = new Array(5);
+  hslArr[0] = { h: hsl.h, s: hsl.s, l: hsl.l };
+  hslArr[1] = { h: hsl.h + 180, s: hsl.s, l: hsl.l };
+  hslArr[2] = { h: hsl.h + (240 % 360), s: hsl.s, l: hsl.l };
+  hslArr[3] = { h: hsl.h - 20, s: hsl.s, l: hsl.l };
+  hslArr[4] = { h: hsl.h - 40, s: hsl.s, l: hsl.l };
+  console.log(hslArr);
+  return hslArr;
+}
+
+function getShades(hsl) {
+  const hslArr = new Array(5);
+  hslArr[0] = { h: hsl.h, s: hsl.s, l: hsl.l };
+  hslArr[1] = { h: hsl.h, s: hsl.s, l: hsl.l + 10 };
+  hslArr[2] = { h: hsl.h, s: hsl.s, l: hsl.l + 20 };
+  hslArr[3] = { h: hsl.h, s: hsl.s, l: hsl.l + 30 };
+  hslArr[4] = { h: hsl.h, s: hsl.s, l: hsl.l + 40 };
+  console.log(hslArr);
+  return hslArr;
+}
+
+function showColors(hslArr, lenArr) {
+  const colorArr = new Array(lenArr);
+  let elColor;
+  let elRGB;
+  let elHex;
+  for (let i = 0; i < lenArr; i++) {
+    elColor = "#color-box" + (i + 1) + " .colorsquare";
+    elRGB = hslToRgb(hslArr[i].h, hslArr[i].s, hslArr[i].l);
+    elHex = rgbToHex(elRGB.r, elRGB.g, elRGB.b);
+    console.log(elHex);
+    let htmlDiv = document.querySelector(elColor);
+    htmlDiv.style.background = elHex;
+  }
+}
+
+function writeHSL(hslArr, lenArr) {
+  let elementStr;
+  for (let i = 0; i < lenArr; i++) {
+    elementStr = "#color-box" + (i + 1) + " .hsl";
+    let htmlDiv = document.querySelector(elementStr);
+    htmlDiv.innerHTML = `HSL: ${hslArr[i].h} ${hslArr[i].s}% ${hslArr[i].l}% `;
+  }
+}
+
+function writeRGB(hslArr, lenArr) {
+  const rgbArr = new Array(lenArr);
+  let elementStr;
+  let elRGB;
+  for (let i = 0; i < lenArr; i++) {
+    elementStr = "#color-box" + (i + 1) + " .rgb";
+    elRGB = hslToRgb(hslArr[i].h, hslArr[i].s, hslArr[i].l);
+    let htmlDiv = document.querySelector(elementStr);
+    htmlDiv.innerHTML = `RGB: ${elRGB.r} ${elRGB.g} ${elRGB.b}`;
+  }
+}
+
+function writeHex(hslArr, lenArr) {
+  const hexArr = new Array(lenArr);
+  let elementStr;
+  let elHex;
+  let elRGB;
+  for (let i = 0; i < lenArr; i++) {
+    elementStr = "#color-box" + (i + 1) + " .hex";
+    elRGB = hslToRgb(hslArr[i].h, hslArr[i].s, hslArr[i].l);
+    elHex = rgbToHex(elRGB.r, elRGB.g, elRGB.b);
+    let htmlDiv = document.querySelector(elementStr);
+    htmlDiv.innerHTML = `HEX: ${elHex}`;
+  }
+}
